@@ -15,7 +15,6 @@ import org.springframework.scheduling.quartz.SpringBeanJobFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
@@ -31,7 +30,7 @@ public class EmailJob implements Job {
 
     private ApplicationContext applicationContext;
 
-    private AtomicInteger count = new AtomicInteger();
+    private static final AtomicInteger count = new AtomicInteger();
 
 
     @PostConstruct
@@ -53,7 +52,7 @@ public class EmailJob implements Job {
         LOGGER.info("Email Job has begun...");
         mailMessage.sendEmail();
         count.incrementAndGet();
-        LOGGER.info("Job has finished: {} {}", getNumberOfJobsDone(), " times");
+        LOGGER.info("Job has finished: {} {}", getNumberOfJobsDone(), "times");
     }
 
     @Bean
@@ -75,7 +74,7 @@ public class EmailJob implements Job {
     }
 
     @Bean
-    public SchedulerFactoryBean scheduler(Trigger trigger, JobDetail job, SpringBeanJobFactory factory) throws IOException {
+    public SchedulerFactoryBean scheduler(Trigger trigger, JobDetail job, SpringBeanJobFactory factory) {
         SchedulerFactoryBean schedulerFactory = new SchedulerFactoryBean();
 
         schedulerFactory.setJobFactory(factory);
