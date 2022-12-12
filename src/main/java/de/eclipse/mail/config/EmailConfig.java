@@ -1,6 +1,5 @@
-package de.eclipse.mail;
+package de.eclipse.mail.config;
 
-import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -30,18 +29,6 @@ public class EmailConfig {
     private String provider;
 
 
-    private Properties emailProperties() {
-        Properties prop = new Properties();
-        prop.put("mail.smtp.auth", true);
-        prop.put("mail.smtp.starttls.enable", "false");
-        prop.put("mail.smtp.host", provider);
-        prop.put("mail.smtp.port", "25");
-        prop.put("mail.smtp.ssl", "true");
-        prop.put("mail.smtp.ssl.trust", provider);
-
-        return prop;
-    }
-
     @Bean
     public Session emailSession() {
         return Session.getInstance(emailProperties(), new Authenticator() {
@@ -67,5 +54,17 @@ public class EmailConfig {
         messageSource.setBasename("mailMessage");
 
         return messageSource;
+    }
+
+    private Properties emailProperties() {
+        Properties prop = new Properties();
+        prop.put("mail.smtp.auth", true);
+        prop.put("mail.smtp.starttls.enable", "false");
+        prop.put("mail.smtp.host", provider);
+        prop.put("mail.smtp.port", "25");
+        prop.put("mail.smtp.ssl", "true");
+        prop.put("mail.smtp.ssl.trust", provider);
+
+        return prop;
     }
 }
