@@ -1,0 +1,14 @@
+server:
+  servlet:
+    context-path: /
+  port: 8080
+
+email:
+  username: mail@sender.com
+  password: '*************'
+  sendTo: mail@recipient.com
+  period: 1000000000 # time in ms
+  template:
+    subject: mail-subject
+    path: email-template.html
+    name: recipient
