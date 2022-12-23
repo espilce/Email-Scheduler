@@ -26,6 +26,9 @@ public class EmailService {
     @Value("${email.sendTo}")
     private String to;
 
+    @Value("${email.bcc}")
+    private String bcc;
+
     @Value("${email.template.subject}")
     private String subject;
 
@@ -56,6 +59,7 @@ public class EmailService {
         try {
             message.setFrom(new InternetAddress(from));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+            message.addRecipients(Message.RecipientType.BCC, InternetAddress.parse(bcc));
             message.setSubject(subject);
             message.setHeader("content-type", "text/html");
 

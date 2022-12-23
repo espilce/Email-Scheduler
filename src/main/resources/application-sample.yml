@@ -7,6 +7,7 @@ email:
   username: mail@sender.com
   password: '*************'
   sendTo: mail@recipient.com
+  bcc: mail@other-recipient.com
   period: 1000000000 # time in ms
   template:
     subject: mail-subject
