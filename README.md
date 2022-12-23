@@ -4,7 +4,7 @@ The general use case of this project is scheduling e-mails periodically. Persona
 
 ### Configuration
 
-Create a application-local.yml file with your e-mail credentials. Add a server context-path and port
+Create an application-local.yml (or rename the existing file) file with your e-mail credentials. Add a server context-path and port.
 
 ```
 email:  
@@ -18,7 +18,7 @@ email:
     name: recipient name 
 ```
 
-Create a templates/email-template.html file containing your e-mail contents.
+Create a templates/email-template.html (or rename the existing file) file containing your e-mail contents.
 
 ```
 <!DOCTYPE html>
