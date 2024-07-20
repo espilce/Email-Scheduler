@@ -26,21 +26,20 @@ public class EmailJob implements Job {
     private Long emailPeriod;
 
     @Autowired
-    private EmailService mailMessage;
+    private EmailService emailService;
 
     private ApplicationContext applicationContext;
 
     private static final AtomicInteger count = new AtomicInteger();
 
-
     @PostConstruct
     public void init() {
-        LOGGER.info("Starting scheduler...");
+        LOGGER.info("Initializing scheduler...");
     }
 
     @Autowired
     public EmailJob(EmailService message, ApplicationContext applicationContext) {
-        this.mailMessage = message;
+        this.emailService = message;
         this.applicationContext = applicationContext;
     }
 
@@ -50,7 +49,7 @@ public class EmailJob implements Job {
     @Override
     public void execute(JobExecutionContext jobExecutionContext) {
         LOGGER.info("Email Job has begun...");
-        mailMessage.sendEmail();
+        emailService.sendEmail();
         count.incrementAndGet();
         LOGGER.info("Job has finished: {} {}", getNumberOfJobsDone(), "times");
     }
@@ -76,7 +75,6 @@ public class EmailJob implements Job {
     @Bean
     public SchedulerFactoryBean scheduler(Trigger trigger, JobDetail job, SpringBeanJobFactory factory) {
         SchedulerFactoryBean schedulerFactory = new SchedulerFactoryBean();
-
         schedulerFactory.setJobFactory(factory);
         schedulerFactory.setJobDetails(job);
         schedulerFactory.setTriggers(trigger);

@@ -25,9 +25,11 @@ public class EmailConfig {
     @Value("${email.password}")
     private String password;
 
-    @Value("${email.provider}")
-    private String provider;
+    @Value("${email.host}")
+    private String host;
 
+    @Value("${email.port}")
+    private String port;
 
     @Bean
     public Session emailSession() {
@@ -44,7 +46,6 @@ public class EmailConfig {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver);
         templateEngine.setTemplateEngineMessageSource(source);
-
         return templateEngine;
     }
 
@@ -52,18 +53,17 @@ public class EmailConfig {
     public ResourceBundleMessageSource emailMessageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasename("mailMessage");
-
         return messageSource;
     }
 
     private Properties emailProperties() {
         Properties prop = new Properties();
         prop.put("mail.smtp.auth", true);
-        prop.put("mail.smtp.starttls.enable", "false");
-        prop.put("mail.smtp.host", provider);
-        prop.put("mail.smtp.port", "25");
-        prop.put("mail.smtp.ssl", "true");
-        prop.put("mail.smtp.ssl.trust", provider);
+        prop.put("mail.transport.protocol", "smtp");
+        prop.put("mail.smtp.starttls.enable", "true");
+        prop.put("mail.smtp.ssl.protocols", "TLSv1.2");
+        prop.put("mail.smtp.host", host);
+        prop.put("mail.smtp.port", port);
 
         return prop;
     }

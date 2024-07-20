@@ -38,6 +38,9 @@ public class EmailService {
     @Value("${email.template.name}")
     private String name;
 
+    @Value("${email.bccEnabled}")
+    private boolean bccEnabled;
+
     private final SpringTemplateEngine templateEngine;
 
     private final Session session;
@@ -50,27 +53,8 @@ public class EmailService {
     }
 
     public void sendEmail() {
-        Message message = new MimeMessage(session);
-        Context context = new org.thymeleaf.context.Context();
-        context.setVariable("name", name);
-
-        String html = templateEngine.process(templatePath, context);
-
         try {
-            message.setFrom(new InternetAddress(from));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-            message.addRecipients(Message.RecipientType.BCC, InternetAddress.parse(bcc));
-            message.setSubject(subject);
-            message.setHeader("content-type", "text/html");
-
-            BodyPart bodyPart = new MimeBodyPart();
-            bodyPart.setText(html);
-            bodyPart.setContent(html, "text/html;charset=utf-8");
-
-            Multipart multipart = new MimeMultipart();
-            multipart.addBodyPart(bodyPart);
-
-            message.setContent(multipart);
+            Message message = buildEmail();
             Transport.send(message);
             LOGGER.info("E-Mail sent to: {}", to);
 
@@ -78,5 +62,32 @@ public class EmailService {
             LOGGER.error("Failed to send e-mail: ", e);
             throw new EmailException(e);
         }
+    }
+
+    private Message buildEmail() throws MessagingException {
+        Message message = new MimeMessage(session);
+        Context context = new Context();
+        context.setVariable("name", name);
+
+        String html = templateEngine.process(templatePath, context);
+        message.setFrom(new InternetAddress(from));
+        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+
+        if(bccEnabled) {
+            message.addRecipients(Message.RecipientType.BCC, InternetAddress.parse(bcc));
+        }
+
+        message.setSubject(subject);
+        message.setHeader("content-type", "text/html");
+
+        BodyPart bodyPart = new MimeBodyPart();
+        bodyPart.setText(html);
+        bodyPart.setContent(html, "text/html;charset=utf-8");
+
+        Multipart multipart = new MimeMultipart();
+        multipart.addBodyPart(bodyPart);
+
+        message.setContent(multipart);
+        return message;
     }
 }
