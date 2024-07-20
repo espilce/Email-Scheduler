@@ -39,12 +39,8 @@
         <appender-ref ref="CONSOLE"/>
     </logger>
 
-    <logger name="de.eclipse" level="debug"
-            additivity="false">
+    <root level="info">
         <appender-ref ref="FILE-AUDIT"/>
-    </logger>
-
-    <root level="debug">
-        <appender-ref ref="FILE-AUDIT"/>
+        <appender-ref ref="CONSOLE"/>
     </root>
 </configuration>
