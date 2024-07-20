@@ -1,58 +1,27 @@
 # Use Case
 
-The general use case of this project is scheduling e-mails periodically. Personally, I wanted to send static e-mails periodically to my landlord asking for a car park as they were unavailable when moving in. They don't keep track of people asking basically having no waiting list.
+The use case of this project is scheduling e-mails periodically. Personally, I wanted to send static e-mails periodically to my landlord asking for a car park as they were unavailable when moving in. They don't keep track of people asking having no waiting list and encouraged me to ask once a month.
 
 ### Configuration
 
-Create an application-local.yml (or rename the existing file) file with your e-mail credentials. Add a server context-path and port.
+Create an application(-local).yml file with your e-mail credentials. Add a server context-path and port.
 
 ```
-email:  
-  username: mail@domain.com  
-  password: **************** 
-  sendTo: mail@recipient.com  
-  period: 10000000000000
-  template:  
-    subject: mail-subject 
-    path: email-template.html  
-    name: recipient name 
+email:
+  username: email@name.de
+  password: xxx
+  sendTo: email@recipient.de
+  bcc: email@recipient2.de
+  bccEnabled: true
+  period: 1814400000 # 3 weeks in milliseconds
+  host: smpt.host.de
+  port: 587
+  template:
+    subject: your subject
+    path: template.html
+    name: recipient
 ```
 
-Create a templates/email-template.html (or rename the existing file) file containing your e-mail contents.
-
-```
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="x-apple-disable-message-reformatting">
-    <title></title>
-    <!--[if mso]>
-    <noscript>
-        <xml>
-            <o:OfficeDocumentSettings>
-                <o:PixelsPerInch>96</o:PixelsPerInch>
-            </o:OfficeDocumentSettings>
-        </xml>
-    </noscript>
-    <![endif]-->
-    <style>
-        table, td, div, h1, p {
-            font-family: Arial, sans-serif;
-        }
-    </style>
-</head>
-<body style="margin:0;padding:0;">
-<table role="presentation" style="width:100%;border-collapse:collapse;border:0;border-spacing:0;background:#ffffff;">
-    <tr>
-        <td align="left" style="padding:0;">
-            <p>CONTENT</p>
-        </td>
-    </tr>
-</table>
-</body>
-</html>
-```
+In the resources/templates directory create an email-template.html file containing your e-mail credentials.
 
 
